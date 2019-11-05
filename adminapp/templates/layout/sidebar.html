@@ -1,0 +1,92 @@
+{% load staticfiles %}
+<!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="{% url 'index' %}" class="brand-link">
+                <img src="{% static "assets/images/logo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle"
+                    style="opacity: .8">
+                <span class="brand-text font-weight-light">F&R Projekt Manager</span>
+            </a>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                {% if request.user.is_authenticated %}
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item">
+                            <a href="{% url 'index' %}" class="nav-link active">
+                                <i class="nav-icon fa fa-th"></i>
+                                <p>
+                                    Übersicht
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-home"></i>
+                                <p>
+                                    Häuser
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" id="current-buildings">
+
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-key"></i>
+                                <p>
+                                    Wohnungen
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" id="current-flats">
+
+                            </ul>
+                        </li>
+                        {% if request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a href="{% url 'staffs' %}" class="nav-link">
+                                    <i class="nav-icon fa fa-users"></i>
+                                    <p>
+                                        Benutzerliste
+                                    </p>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a href="{% url 'companies' %}" class="nav-link">
+                                <i class="nav-icon fa fa-gavel"></i>
+                                <p>
+                                    Handwerkerliste
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{% url 'projects' %}" class="nav-link">
+                                <i class="nav-icon fa fa-map-marker"></i>
+                                <p>
+                                    Projekte
+                                </p>
+                            </a>
+                        </li>
+                        {% if request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a href="{% url 'components' %}" class="nav-link">
+                                    <i class="nav-icon fa fa-table"></i>
+                                    <p>
+                                        Bauteil Übersicht
+                                    </p>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>

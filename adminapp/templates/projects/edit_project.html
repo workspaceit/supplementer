@@ -1,0 +1,157 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Edit Project</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Edit Project</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="form-edit-project" action="" method="post">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.name.id_for_label }}">Name<span class="required-cls">*</span></label>
+                                            <input type="text" id="id_name" name="name" value="{{ form.name.value }}"
+                                                       class="form-control" placeholder="Enter name">
+                                                {{ form.name.errors }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.type.id_for_label }}">Type</label>
+                                            <input type="text" id="id_type" name="type" value="{{ form.type.value }}"
+                                                       class="form-control" placeholder="Enter type">
+                                                {{ form.type.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.city.id_for_label }}">City</label>
+                                            <input type="text" id="id_city" name="city" value="{{ form.city.value }}"
+                                                       class="form-control" placeholder="Enter city">
+                                                {{ form.city.errors }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.energetic_standard.id_for_label }}">Energetic Standard</label>
+                                            <input type="text" id="id_energetic_standard" name="energetic_standard" value="{{ form.energetic_standard.value }}"
+                                                       class="form-control" placeholder="Enter Energetic Standard">
+                                                {{ form.energetic_standard.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                                            <input  width="100%" placeholder="yyyy-mm-dd" id="id_start_date" value="{{ form.start_date.value|date:"Y-m-d" }}" class="form-control datepicker-start-date date-picker" name="start_date">
+                                                {{ form.start_date.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.end_date.id_for_label }}">End Date</label>
+                                            <input  width="100%" placeholder="yyyy-mm-dd" id="id_end_date" value="{{ form.end_date.value|date:"Y-m-d" }}" class="form-control datepicker-end-date date-picker" name="end_date">
+                                                {{ form.end_date.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-xs-12">
+
+                                        <div class="form-group">
+                                            <label for="{{ form.address.id_for_label }}">Address</label>
+                                            <textarea class="form-control" rows="3" id="id_address" name="address" placeholder="Enter address">{{ form.address.value|default_if_none:'' }}</textarea>
+                                                {{ form.address.errors }}
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.description.id_for_label }}">Description</label>
+                                            <textarea class="form-control" rows="3" id="id_description" name="description" placeholder="Enter Description">{{ form.description.value|default_if_none:'' }}</textarea>
+                                                {{ form.description.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary">Update Project</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <script>
+        $(function () {
+            $("#form-edit-project").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'name': {
+                        required: true
+                    },
+                    'address': {
+                        required: false
+                    },
+                    'description': {
+                        required: false
+                    },
+                    'type': {
+                        required: false
+                    },
+                    'city': {
+                        required: false
+                    },
+                    'energetic_standard': {
+                        required: false,
+                    },
+                    'start_date': {
+                        required: false
+                    },
+                    'end_date': {
+                        required: false
+                    }
+                }
+            });
+            $('#form-edit-project').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

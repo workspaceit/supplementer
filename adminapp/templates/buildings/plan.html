@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<div class="row">
+    <div class="col-sm-2 col-12 plan-div">
+        <div class="plan_wrap_container">
+            <a href="{% url 'building-plan-add' building_id=building_id %}"
+               class="plan_anc">
+                <div class="plan_wrap add_plan_wrap">
+                    <div class="plan_pdf text-center">
+                        <img class="img-fluid" style="max-height: 100px;" src="{% static 'assets/images/add_plan.png' %}">
+                    </div>
+                    <div class="plan_title">
+                        <p>Add Plan</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% for plan in plans %}
+        <div class="col-sm-2 col-12 plan-div">
+            <div class="plan_wrap_container">
+                <button type="button" data-toggle="tooltip" data-placement="top" title="Delete Plan"
+                        class="btn delete-building-plan"
+                        data-id="{{ plan.id }}" style="background-color: white;">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+                <a href="{% if plan.plan_file %}{{ plan.plan_file.url }}{% else %}#{% endif %}" target="_blank"
+                   class="plan_anc">
+                    <div class="plan_wrap">
+                        <div class="plan_pdf text-center">
+                            <img class="img-fluid" style="max-height: 100px;" src="
+                                    {% if plan.file_type == "pdf" %}{% static 'assets/images/pdf.png' %}{% else %}{% static 'assets/images/file.png' %}{% endif %}">
+                        </div>
+                        <div class="plan_title">
+                            <p>{{ plan.title|title }}</p>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>

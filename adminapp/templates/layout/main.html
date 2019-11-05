@@ -1,0 +1,32 @@
+{% load staticfiles %}
+{% load i18n %}
+{% include "layout/header.html" %}
+{% include "layout/navbar.html" %}
+{% include "layout/sidebar.html" %}
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to to the body tag
+to get the desired effect
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+
+        <div class="content-wrapper">
+            {% csrf_token %}
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+        <!-- /.content-wrapper -->
+
+
+        {% include "layout/footer.html" %}
+    </div>
+
+</body>
+
+</html>

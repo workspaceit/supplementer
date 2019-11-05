@@ -1,0 +1,237 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-12 ">
+                    <div class="bradcrumb_container clearfix">
+                        <div class="brad_Wrap pull-left">
+                            <ol class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Task</li>
+                            </ol>
+                        </div>
+                        <div class="brad_info pull-right">
+                            <ul class="detail_breadcrumb">
+                                <li>{{ task.building_component.building.project.name|title }}</li>
+                                <li>Haus: &nbsp;{{ task.building_component.building.hause_number }}</li>
+                                {% if task.building_component.flat %}
+                                    <li>Wohnung: &nbsp;{{ task.building_component.flat.number }}</li>
+                                {% endif %}
+                                <li>{{ task.building_component.component.parent.name }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm col-12">
+                                    <h5><strong>{{ task.building_component.component.name|title }}</strong></h5>
+                                    <p><strong>Erstellt Von: </strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}
+                                    </p>
+
+                                    <div class="row align-items-center">
+                                        <div class="col-sm col-12">
+                                            <div class="form-group">
+                                                <label>Zugehörig</label>
+                                                {% if assign_to %}
+                                                    <p class="td_assign_to"><img class="img-circle img-sm"
+                                                                                 src="{{ assign_to.avatar }}"
+                                                                                 alt="User Image"><span>{{ assign_to.fullname }}</span>
+                                                    </p>
+                                                {% else %}
+                                                    <p class="td_assign_to">N/A</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm col-12">
+                                            <div class="form-group">
+                                                <label>Anhänger</label>
+                                                <select class="form-control select2" multiple
+                                                        id="task-followers" name="task-followers"
+                                                        data-placeholder="Select Followers"
+                                                        style="width: 90%;">
+                                                    {% for follower in followers %}
+                                                        <option value="{{ follower.id }}">{{ follower.text }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <input type="hidden" id="task-followers-id" value="{{ task_followers }}">
+                                                <button class="btn btn-primary btn-chk-follower" id="save-task-followers"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="Add followers">
+                                                        <i class="far fa-save"></i></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm col-12">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control" id="task-status" style="    border-radius: 0px;height: 32px;border-color: #aba9ab;"
+                                                        data-placeholder="Select Status"
+                                                        style="width: 100%;">
+                                                    <option value="to_do"
+                                                            {% if task.status == 'to_do' %}selected{% endif %}>Nicht Begonnen
+                                                    </option>
+                                                    <option value="in_progress"
+                                                            {% if task.status == 'in_progress' %}selected{% endif %}>In Bearbeitung
+                                                    </option>
+                                                    <option value="done"
+                                                            {% if task.status == 'done' %}selected{% endif %}>Fertig
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm col-12">
+                                            <div class="form-group">
+                                                <label for="stn">Frist</label>
+                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd" style="   height: 32px;border-color: #aba9ab;"
+                                                       value="{{ task.due_date|date:"Y-m-d" }}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-12">
+                                            <div class="dropdown-divider"></div>
+                                            <h3 class="task_des">
+                                                <strong>Beschreibung</strong>
+                                                <button class="btn btn-primary edit_des" data-toggle="tooltip"
+                                                        data-placement="top" title="Edit Description"><i
+                                                        class="fa fa-pencil-alt"></i></button>
+                                                <button class="btn btn-primary done_des" id="save-task-description"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="Save Description"><i
+                                                        class="fa fa-check"></i></button>
+                                            </h3>
+                                            <p class="text-justify des_text"
+                                               id="task-description-text">{{ task.building_component.description|default_if_none:'' }}
+                                            </p>
+                                            <textarea class="textarea task_des_area" id="task-description"
+                                                      placeholder="Place some text here"
+                                                      style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-12">
+                                            <h5><strong>Nachrichten </strong></h5>
+                                            <form class="task-comment-form" action="{% url 'add-new-comment' task_id=task.id %}" method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                                <textarea class="textarea task-comment-text" name="task_comment_text"
+                                                                          placeholder="Place some text here"
+                                                                          style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="image_wrap">
+                                                            <div id="uploadPreview"></div>
+                                                            <input type="button" id="removeImage1" value="x"
+                                                                   class="btn-rmv1"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="yes">
+                                                            <span class="btn_upload btn btn-primary">
+                                                            <input type="file" id="task_comment_files" name="task_comment_files" multiple="multiple"/>
+                                                            Wählen Sie Image
+                                                            </span>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Nachrichten hinzufügen
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-12">
+                                            <br>
+                                            <div class="dropdown-divider"></div>
+                                            <h5><strong>vorheriger Nachrichten  </strong></h5>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- Box Comment -->
+                                            <div class="card card-widget">
+                                                <!-- /.card-header -->
+                                                <!-- /.card-body -->
+                                                <div class="card-footer card-comments" id="comments-list">
+                                                    {% include 'tasks/comments.html' %}
+                                                </div>
+                                                <!-- /.card-footer -->
+                                            </div>
+                                            {% if more_comments %}
+                                                <div class="col-md-12 text-center">
+                                                    <button id="show-more-comments" class="btn btn-send btn-v-n"
+                                                            data-page-number="2">Mehr Nachrichten</button>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <script>
+        $(function () {
+            var task_followers_id = $("#task-followers-id").val().replace(/'/g, '"');
+            $("#task-followers").select2();
+            $("#task-followers").select2('val', JSON.parse(task_followers_id));
+            $("#task-due-date").datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            }).on("change", function (e) {
+                var url = window.location.pathname.split("/");
+                var task_id = url[2];
+                var due_date = $(this).val();
+                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+                var data = {
+                    'task_id': task_id,
+                    'due_date': due_date,
+                    'csrfmiddlewaretoken': csrfToken
+                };
+                $('.loader').show();
+                $.ajax({
+                    url: base_url + '/change-task-deadline/',
+                    type: 'POST',
+                    data: data,
+                    success: function (responseText) {
+                        var response = responseText;
+                        $('.loader').hide();
+                        if (response.success) {
+                            if (response.message) {
+                                $.growl.notice({message: response.message});
+                            }
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                        $('.loader').hide();
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="{% static 'assets/javascripts/task.js' %}"></script>
+{% endblock %}

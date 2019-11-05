@@ -1,0 +1,164 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                <li class="breadcrumb-item active">Edit Hauser</li>
+                            </ol>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h3 class="card-title">Edit Hauser</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <form id="form-edit-building" action="" method="post">
+                                        {% csrf_token %}
+                                        {{ form.non_field_errors }}
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.hause_number.id_for_label }}">Hause Number<span class="required-cls">*</span></label>
+                                                    <input type="text" id="id_hause_number" name="hause_number"
+                                                               class="form-control" placeholder="Enter Hause number" value="{{ form.hause_number.value }}">
+                                                        {{ form.hause_number.errors }}
+                                                </div>
+                                                </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.display_number.id_for_label }}">Display Number<span class="required-cls">*</span></label>
+                                                    <input type="text" id="id_display_number" name="display_number"
+                                                               class="form-control" placeholder="Enter Display number" value="{{ form.display_number.value }}">
+                                                        {{ form.display_number.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.grundung.id_for_label }}">Grundung<span class="required-cls">*</span></label>
+                                                    <select id="id_grundung" name="grundung" class="form-control" placeholder="Enter Grundung" disabled>
+                                                        <option value="sf" {% if form.grundung.value == 'sf' %}selected{% endif %}>Streifenfundamente</option>
+                                                        <option value="sb" {% if form.grundung.value == 'sb' %}selected{% endif %}>Stahlbeton</option>
+                                                        <option value="sb_sf" {% if form.grundung.value == 'sb_sf' %}selected{% endif %}>Stahlbeton mit streifenfundamente</option>
+                                                        {{ form.grundung.errors }}
+                                                    </select>
+                                                </div>
+                                                </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.aussenwande_eg_og_dg.id_for_label }}">Aussenwande ab EG<span class="required-cls">*</span></label>
+                                                    <select id="id_aussenwande_eg_og_dg" name="aussenwande_eg_og_dg" class="form-control" placeholder="Enter Aussenwande ab EG" disabled>
+                                                        <option value="su" {% if form.aussenwande_eg_og_dg.value == 'su' %}selected{% endif %}>Stahlbeton und Unipor</option>
+                                                        <option value="sk" {% if form.aussenwande_eg_og_dg.value == 'sk' %}selected{% endif %}>Stahlbeton und kalksandstein</option>
+                                                        {{ form.aussenwande_eg_og_dg.errors }}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.fenster_beschattung.id_for_label }}">Fenster Beschattung<span class="required-cls">*</span></label>
+                                                    <select id="id_fenster_beschattung" name="fenster_beschattung" class="form-control" placeholder="Enter Fenster Beschattung" disabled>
+                                                        <option value="nbk" {% if form.fenster_beschattung.value == 'nbk' %}selected{% endif %}>Neubaukasten</option>
+                                                        <option value="aufsr" {% if form.fenster_beschattung.value == 'aufsr' %}selected{% endif %}>Aufsatzrollladenkasten</option>
+                                                        <option value="rse" {% if form.fenster_beschattung.value == 'rse' %}selected{% endif %}>Rafstorelement</option>
+                                                        {{ form.fenster_beschattung.errors }}
+                                                    </select>
+                                                </div>
+                                                </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.dach.id_for_label }}">Dach</label>
+                                                    <select id="id_dach" name="dach" class="form-control" placeholder="Enter Dach" disabled>
+                                                        <option value="zd" {% if form.dach.value == 'zd' %}selected{% endif %}>Zeigeldach</option>
+                                                        <option value="fs" {% if form.dach.value == 'fs' %}selected{% endif %}>Flachdcah aus Stahlbeton</option>
+                                                        {{ form.dach.errors }}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.description.id_for_label }}">Description</label>
+                                                    <textarea class="form-control" rows="3" id="id_description" name="description" placeholder="Enter Description">{{ form.description.value|default_if_none:'' }}</textarea>
+                                                        {{ form.description.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <button type="submit" class="btn btn-primary">Update Hauser</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.col-lg-6 -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </div>
+                <!-- /.content -->
+            </div>
+    </div>
+    <script>
+        $(function () {
+            $("#form-edit-building").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'hause_number': {
+                        required: true
+                    },
+                    'display_number': {
+                        required: true
+                    },
+                    'description': {
+                        required: false
+                    },
+                    'grundung': {
+                        required: true
+                    },
+                    'aussenwande_eg_og_dg': {
+                        required: true
+                    },
+                    'fenster_beschattung': {
+                        required: true,
+                    }
+                }
+            });
+            $('#form-edit-building').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+
+{% endblock %}

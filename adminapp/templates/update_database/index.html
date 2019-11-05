@@ -1,0 +1,134 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2"></div>
+            <div class="col-sm-12 ">
+                <div class="bradcrumb_container clearfix">
+                    <div class="brad_Wrap pull-left">
+                        <ol class="breadcrumb ">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                            <li class="breadcrumb-item active">Update Database</li>
+                        </ol>
+                    </div>
+                    <div class="brad_info pull-right">
+                        <ul class="detail_breadcrumb">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card data_table_card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm col-6">
+                                    <h3 class="card-title">Update Components</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <a type="button" class="btn btn-primary  pull-left"
+                               data-target="#update-database"
+                               data-toggle="modal"
+                               title=""><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;Update Database
+                            </a>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+
+    <div id="update-database" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Update Database</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="panel">
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Type "CONFIRM" for confirmation update
+                                            database</label>
+                                        <input type="text" name="update-confirm" class="form-control"
+                                               id="update-confirm" placeholder="Type CONFIRM here...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                        data-dismiss="modal" aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg" id="update-database-button"><i
+                                        class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="application/javascript">
+        $('body').on('click', '#update-database-button', function (event) {
+            var confirm = $("#update-confirm").val();
+            if (confirm == 'CONFIRM') {
+                $("#update-database-button").prop('disabled', true);
+                var data = {
+                    confirm: confirm,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                };
+                var request = $.ajax({
+                    url: base_url + '/update-database-request/',
+                    type: 'POST',
+                    data: data
+                });
+
+                request.done(function (e) {
+                    $.growl.notice({
+                        message: e.message
+                    });
+                    $('#update-database').modal('toggle');
+                    $("#update-database-button").prop('disabled', false);
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    $.growl.error({message: "Request failed: " + textStatus});
+                    $("#update-database-button").prop('disabled', false);
+                });
+
+            }
+        });
+    </script>
+{% endblock %}

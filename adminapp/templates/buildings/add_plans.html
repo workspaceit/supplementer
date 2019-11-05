@@ -1,0 +1,109 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+        <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Add Plan</li>
+                            </ol>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h3 class="card-title">Add Plan</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <form action="{% url 'building-plan-add' building_id=building_id %}" method="post" enctype="multipart/form-data" id="form-add-building-plans">
+                                        {% csrf_token %}
+                                        {{ form.non_field_errors }}
+                                        <div class="row">
+                                            <div class="col-sm-3  col-xs-12 align-items-center justify-content-center chg_image_profile">
+                                                <div class="row">
+                                                    <div class="col-sm-8 offset-sm-2 col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class=" imgUp">
+                                                                <div class="imagePreview"></div>
+                                                                <label class="btn btn-primary btn_up_image w-100">
+                                                                    Upload<input type="file" class="uploadFile img" value="Upload Photo" name="plan_file" style="width: 0px;height: 0px;overflow: hidden;">
+                                                                </label>
+                                                                {{ form.plan_file.errors }}
+                                                            </div><!-- col-2 -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.title.id_for_label }}">Plan name<span class="required-cls">*</span></label>
+                                                    <input type="text" class="form-control" id="id_title" name="title" placeholder="Enter Plan name" data-parsley-trigger="change">
+                                                    {{ form.title.errors }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Add Plan</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                    <!-- /.card-body -->
+                            </div>
+                                <!-- /.col-lg-6 -->
+                        </div>
+                            <!-- /.row -->
+                    </div>
+                        <!-- /.container-fluid -->
+                </div>
+                    <!-- /.content -->
+            </div>
+    <script type="text/javascript">
+        $('.uploadFile').change(function () {
+            var file = $('.uploadFile')[0].files[0].name.split('.');
+            file = file[file.length - 1];
+
+            if (file != 'pdf') {
+                $('.imagePreview').attr('background-image', 'url(../../static/assets/images/file.png)');
+            }
+            $(this).prev('label').text(file);
+        });
+        $(function () {
+            $("#form-add-building-plans").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'title': {
+                        required: true
+                    },
+                    'plan_file': {
+                        required: true
+                    }
+                }
+            });
+            $('#form-add-building-plans').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

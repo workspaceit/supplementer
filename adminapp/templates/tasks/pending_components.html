@@ -1,0 +1,46 @@
+{% load staticfiles %}
+<div id="accordion">
+    {% for component in components %}
+        {% if component.total_tasks > 0 %}
+            <div class="card">
+                <div class="card-header task_group_header" id="heading-pending-component-{{ component.component.id }}">
+                    <div class="row">
+                        <div class="col-sm-6 col-12 pending-component-accordion" data-id="{{ component.component.id }}" data-toggle="collapse"
+                             data-target="#pending-component-{{ component.component.id }}"
+                             aria-expanded="true" aria-controls="pending-component-{{ component.component.id }}">
+                            <h5 class="mb-0 text-xs-center">
+                                <button class="btn btn-link">
+                                    {{ component.component.name|title }}
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="form-group clearfix mb-0">
+                                <p class="td_assign_to mb-0 pull-right" style="float: right;">
+                                    <label class="task_assigned_label">Handwerker: </label>
+                                    <img class="img-circle img-sm assignee-handwerker-image"
+                                         src="{% if component.assign_to and component.assign_to.avatar %}{{ component.assign_to.avatar.url }}{% else %}{% static 'assets/images/user.jpg' %}{% endif %}"
+                                         alt="User Image">
+                                    <span class="assignee-handwerker-name">{% if component.assign_to %}{{ component.assign_to.handworker.company_name }}{% else %}N/A{% endif %}</span>
+                                    <span class="edit_assign_task" data-id="{{ component.id }}" data-component-id="{{ component.component.id }}" data-handworker-id="{% if component.assign_to %}{{ component.assign_to.id }}{% endif %}"><a data-toggle="modal"
+                                                                      data-target="#assignee-handwerker-modal"><i
+                                            class="fa fa-pencil-alt"></i></a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="pending-component-{{ component.component.id }}" class="collapse" data-type=""
+                     aria-labelledby="heading-pending-component-{{ component.component.id }}" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="row task-list">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+

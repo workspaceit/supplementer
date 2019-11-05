@@ -1,0 +1,99 @@
+{% extends "layout/main.html" %}
+{% block content %}
+{% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-12 ">
+                    <div class="bradcrumb_container clearfix">
+                        <div class="brad_Wrap pull-left">
+                            <ol class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                <li class="breadcrumb-item active">Wohnung</li>
+                            </ol>
+                        </div>
+                        <div class="brad_info pull-right">
+                            <ul class="detail_breadcrumb">
+                                <li>{{ request.session.active_project.name|title }}</li>
+                                <li>Haus: &nbsp; {{ request.session.active_building.number }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card data_table_card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm col-6">
+                                    <h3 class="card-title">Wohnungen</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body building_list task-card">
+                            <nav>
+                                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="current-flat-list" data-toggle="tab" href="#current-flat-list-tab"
+                                       role="tab" aria-controls="nav-task" aria-selected="false">Wohnungen</a>
+                                    <a class="nav-item nav-link" id="current-building-plan-list" data-toggle="tab" href="#current-plan-list-tab"
+                                       role="tab" aria-controls="nav-task" aria-selected="false">Pläne</a>
+                                </div>
+                            </nav>
+                           <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                               <div class="tab-pane fade show active" id="current-flat-list-tab" role="tabpanel"
+                                    aria-labelledby="nav-task-tab">
+                                   <div class="row">
+                                       {% for flat in flats %}
+                                           <div class="col-md-3">
+                                               <div class="building_wrap">
+                                                   <a href="{% url 'flat-tasks' flat_id=flat.id %}">
+                                                       <div class="card building_list_card">
+                                                           <div class="card-body">
+                                                               <div class="icon_wrap">
+                                                                   <i class="fa fa-key"></i>
+                                                               </div>
+                                                               <h5>{{ flat.number }}</h5>
+                                                           </div>
+                                                           <div class="card-footer">
+                                                            {#<div class="bd_cardfooter justify-content-start">#}
+                                                                {#<h6><strong>Hauser Name</strong></h6>#}
+                                                            {#</div>#}
+                                                               <div class="bd_cardfooter justify-content-end">
+                                                                   <p><label for="">Bauteil Übersicht: </label> {{ flat.total_tasks }}</p>
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                   </a>
+                                               </div>
+                                           </div>
+                                       {% endfor %}
+                                   </div>
+                               </div>
+                                <div class="tab-pane fade show" id="current-plan-list-tab" role="tabpanel"
+                                     aria-labelledby="nav-task-tab">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}

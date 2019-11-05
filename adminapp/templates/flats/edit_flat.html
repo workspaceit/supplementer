@@ -1,0 +1,148 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Edit Wohnung</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Edit Wohnung</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="form-edit-flat" action="" method="post">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label for="{{ form.number.id_for_label }}">Wohnung Number<span class="required-cls">*</span></label>
+                                            <input type="text" id="id_number" name="number"
+                                                   class="form-control" placeholder="Enter Wohnung number" value="{{ form.number.value }}">
+                                            {{ form.number.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label for="{{ form.client_name.id_for_label }}">Client Name</label>
+                                            <input type="text" id="id_client_name" name="client_name"
+                                                   class="form-control" placeholder="Enter Client Name" value="{{ form.client_name.value }}">
+                                            {{ form.client_name.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label for="{{ form.client_email.id_for_label }}">Client Email</label>
+                                            <input type="email" id="id_client_email" name="client_email"
+                                                   class="form-control" placeholder="Enter Client Email" value="{{ form.client_email.value }}">
+                                            {{ form.client_email.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label for="{{ form.client_tel.id_for_label }}">Client Telephone</label>
+                                            <input type="text" id="id_client_tel" name="client_tel"
+                                                   class="form-control" placeholder="Enter Client Telephone" value="{{ form.client_tel.value }}">
+                                            {{ form.client_tel.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label for="{{ form.client_address.id_for_label }}">Client Address</label>
+                                            <textarea class="form-control" rows="3" id="id_client_address" name="client_address"
+                                                      placeholder="Enter Address">{{ form.client_address.value|default_if_none:'' }}</textarea>
+                                            {{ form.client_address.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label for="{{ form.description.id_for_label }}">Wohnung Description</label>
+                                            <textarea class="form-control" rows="3" id="id_description" name="description"
+                                                      placeholder="Enter Description">{{ form.description.value|default_if_none:'' }}</textarea>
+                                            {{ form.description.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary">Update Wohnung</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $("#form-edit-flat").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'number': {
+                        required: true
+                    },
+                    'client_name': {
+                        required: false
+                    },
+                    'client_email': {
+                        required: false
+                    },
+                    'client_tel': {
+                        required: false,
+                        phonevalidate: true
+                    },
+                    'client_address': {
+                        required: false
+                    },
+                    'description': {
+                        required: false,
+                    }
+                }
+            });
+            $('#form-edit-flat').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+
+{% endblock %}

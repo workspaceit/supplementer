@@ -1,0 +1,29 @@
+{% load staticfiles %}
+{% for comment in comments_list %}
+<div class="card-comment">
+    <!-- User image -->
+    <img class="img-circle img-sm" src="{% if comment.user.avatar %}{{ comment.user.avatar.url }}{% else %}{% static "assets/images/avatar5.png" %}{% endif %}"
+         alt="User Image">
+
+    <div class="comment-text">
+        <div class="row">
+            <div class="col-sm-12 mb-2">
+                <span class="username">
+                    {{ comment.user.first_name }} {{ comment.user.last_name }}
+                    <span class="text-muted float-right">{% if today == comment.created_at|date:"Y-m-d" %}{{ comment.created_at|date:"h:i A" }} Today{% else %}{{ comment.created_at|date:"d M Y" }}{% endif %}</span>
+                </span><!-- /.username -->
+                {{ comment.text }}
+            </div>
+            {% if comment.file_type %}
+                <div class="col-sm-12 comment_img">
+                {% for file in comment.file_type %}
+                    <a id="single_image" href="{{ file.path }}"><img
+                            src="{{ file.path }}" alt=""/></a>
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- /.comment-text -->
+</div>
+{% endfor %}

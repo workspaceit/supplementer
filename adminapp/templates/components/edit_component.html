@@ -1,0 +1,182 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                            <!-- <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Update Component</li>
+                            </ol> -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h3 class="card-title">Bauteil-Übersicht Bearbeiten</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <form action="" method="post" id="form-edit-components">
+                                    {% csrf_token %}
+                                    {{ form.non_field_errors }}
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.name.id_for_label }}">Name<span class="required-cls">*</span></label>
+                                                    <input type="text" class="form-control" name="name" id="id_name" placeholder="Enter Name" value="{{ form.name.value }}">
+                                                    {{ form.name.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12 inline_radio_wrap">
+                                            <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" id="id_flat" {% if form.flat.value == 1 %} checked {% endif %}>
+                                                    <label for="{{ form.flat.id_for_label }}" class="form-check-label">Wohnung</label>
+                                                    {{ form.flat.errors }}
+                                                </div>
+                                                <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="building" id="id_building" {% if form.building.value == 1 %} checked {% endif %}>
+                                                    <label for="{{ form.flat.id_for_label }}" class="form-check-label">Haus </label>
+                                                    {{ form.building.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group inform_select">
+                                                    <label for="{{ form.parent_id.id_for_label }}">Elternteil Bauteil-Üsersicht</label>
+                                                    <br>
+                                                    <select class="component-parent" name="parent_id" id="id_parent_id" {% if parent_id is None %}disabled{% endif %} disabled>
+                                                      <option></option>
+                                                        {% for parent in parents %}
+                                                        <option value="{{ parent.id }}" {% if parent_id == parent.id %}selected{% endif %}>{{ parent.name }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                    {{ form.parent.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group inform_select">
+                                                    <label for="{{ form.type.id_for_label }}">Type</label>
+                                                    <br>
+                                                    <select class="component-type" name="type" id="id_type" {% if parent_id is None %}disabled{% endif %} disabled>
+                                                        <option></option>
+                                                        <optgroup name="Grundung" label="Grundung">
+                                                            <option value="sf" {% if form.type.value == 'sf' %}selected{% endif %}>Streifenfundamente</option>
+                                                            <option value="sb" {% if form.type.value == 'sb' %}selected{% endif %}>Stahlbeton</option>
+                                                            <option value="sb_sf" {% if form.type.value == 'sb_sf' %}selected{% endif %}>Stahlbeton mit streifenfundamente</option>
+                                                        </optgroup>
+                                                        <optgroup name="Aussenwande ab EG" label="Aussenwande ab EG">
+                                                            <option value="su" {% if form.type.value == 'su' %}selected{% endif %}>Stahlbeton und Unipor</option>
+                                                            <option value="sk" {% if form.type.value == 'sk' %}selected{% endif %}>Stahlbeton und kalksandstein</option>
+                                                        </optgroup>
+                                                        <optgroup name="Fenster Beschattung" label="Fenster Beschattung">
+                                                            <option value="nbk" {% if form.type.value == 'nbk' %}selected{% endif %}>Neubaukasten</option>
+                                                            <option value="aufsr" {% if form.type.value == 'aufsr' %}selected{% endif %}>Aufsatzrollladenkasten</option>
+                                                            <option value="rse" {% if form.type.value == 'rse' %}selected{% endif %}>Rafstorelement</option>
+                                                        </optgroup>
+                                                        <optgroup name="Dach" label="Dach">
+                                                            <option value="zd" {% if form.type.value == 'zd' %}selected{% endif %}>Zeigeldach</option>
+                                                            <option value="fs" {% if form.type.value == 'fs' %}selected{% endif %}>Flachdcah aus Stahlbeton</option>
+                                                        </optgroup>
+                                                    </select>
+                                                    {{ form.type.errors }}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.static_description.id_for_label }}">Beschreibung</label>
+                                                    <textarea class="form-control" rows="3" name="static_description" id="id_static_description" placeholder="Enter Description" >{{ form.static_description.value|default_if_none:'' }}</textarea>
+                                                    {{ form.static_description.errors }}
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <button type="submit" class="btn btn-primary">Bauteil-ubersicht Bearbeiten</button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.col-lg-6 -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
+                    <!-- /.content -->
+                </div>
+                <!-- /.content-wrapper -->
+
+    <script>
+        $(document).ready(function() {
+            $('.component-parent').select2({
+                placeholder: "Select main Component",
+                allowClear: true
+            });
+            $('.component-type').select2({
+                placeholder: "Select Component type",
+                allowClear: true
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#form-edit-component").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'name': {
+                        required: true
+                    },
+                    'flat': {
+                        required: false
+                    },
+                    'building': {
+                        required: false
+                    },
+                    'parent_id': {
+                        required: false
+                    },
+                    'type': {
+                        required: false
+                    },
+                    'static_description': {
+                        required: false,
+                    }
+                }
+            });
+            $('#form-edit-component').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

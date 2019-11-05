@@ -1,0 +1,51 @@
+{% extends "layout/login.html" %}
+{% block title %}FR Projekt Man :: Login{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">Zum Einloggen anmelden</p>
+            {% if msg %}
+                <p class="alert alert-danger">{{ msg }}</p>
+            {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" name="username" class="form-control" placeholder="Benutzername">
+                    <div class="input-group-append">
+                      <span class="fa fa-user input-group-text"></span>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Passwort">
+                    <div class="input-group-append">
+                      <span class="fa fa-lock input-group-text"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                      <div class="checkbox icheck">
+                        <label>
+                          <input type="checkbox"> Merken
+                        </label>
+                      </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                      <button type="submit" class="btn btn-primary btn-block btn-flat">Einloggen</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <p class="mb-1">
+                <a href="{% url 'forget-password' %}">Password vergessen?</a>
+            </p>
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+{% endblock %}

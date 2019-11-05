@@ -1,0 +1,130 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-12 ">
+                    <div class="bradcrumb_container clearfix">
+                        <div class="brad_Wrap pull-left">
+                            <ol class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="">Home</a></li>
+                                <li class="breadcrumb-item active">Tasks</li>
+                            </ol>
+                        </div>
+                        <div class="brad_info pull-right">
+                            <ul class="detail_breadcrumb">
+                                {% if flat %}
+                                    <li>{{ flat.building.project.name|title }}</li>
+                                    <li>Haus:&nbsp;{{ flat.building.hause_number }}</li>
+                                    <li>Wohnung:&nbsp;{{ flat.number }}</li>
+                                {% elif building %}
+                                    <li>{{ building.project.name|title }}</li>
+                                    <li>Haus:&nbsp;{{ building.hause_number }}</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        {% if building %}
+                        <div class="card-body">
+                            {% if building.display_number %}
+                            <p class="summary-building-flat"><strong>Display Nummer:&nbsp;</strong>{{ building.display_number }}</p>
+                            {% endif %}
+                            {% if building.description %}
+                            <p class="summary-building-flat"><strong>Beschreibung:&nbsp;</strong>{{ building.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% elif flat %}
+                        <div class="card-body">
+                            {% if flat.client_name %}
+                            <p class="summary-building-flat"><strong>Client Name:&nbsp;</strong>{{ flat.client_name }}</p>
+                            {% endif %}
+                            {% if flat.client_address %}
+                            <p class="summary-building-flat"><strong>Client Address:&nbsp;</strong>{{ flat.client_address }}</p>
+                            {% endif %}
+                            {% if flat.client_email %}
+                            <p class="summary-building-flat"><strong>Client Email:&nbsp;</strong>{{ flat.client_email }}</p>
+                            {% endif %}
+                            {% if flat.client_tel %}
+                            <p class="summary-building-flat"><strong>Client Telefone:&nbsp;</strong>{{ flat.client_tel }}</p>
+                            {% endif %}
+                            {% if flat.description %}
+                            <p class="summary-building-flat"><strong>Description:&nbsp;</strong>{{ flat.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm col-6">
+                                    <h3 class="card-title">Bauteil Übersicht</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body task-card">
+                            <nav>
+                                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-pending-task-tab" data-toggle="tab"
+                                       href="#nav-pending-task" role="tab" aria-controls="nav-pending-task"
+                                       aria-selected="false">Ausstehende Arbeiten</a>
+                                    <a class="nav-item nav-link" id="nav-done-task-tab" data-toggle="tab"
+                                       href="#nav-done-task" role="tab" aria-controls="nav-done" aria-selected="false">Fertige Arbeiten</a>
+                                    <a class="nav-item nav-link" id="nav-all-task-tab" data-toggle="tab"
+                                       href="#nav-all-task" role="tab" aria-controls="nav-all" aria-selected="false">Alle Arbeiten</a>
+                                    {% if flat %}
+                                        <a class="nav-item nav-link" id="nav-flat-plan-list-tab" data-toggle="tab"
+                                       href="#current-plan-list-tab" role="tab" aria-controls="nav-plans" aria-selected="false">Pläne</a>
+                                    {% else %}
+                                        <a class="nav-item nav-link" id="nav-building-plan-list-tab" data-toggle="tab"
+                                       href="#current-plan-list-tab" role="tab" aria-controls="nav-plans" aria-selected="false">Pläne</a>
+                                    {% endif %}
+                                </div>
+                            </nav>
+                            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                <div class="tab-pane fade show active nav-task-list" data-type="pending"
+                                     id="nav-pending-task" role="tabpanel" aria-labelledby="nav-pending-task-tab">
+
+                                </div>
+                                <div class="tab-pane fade nav-task-list" data-type="done" id="nav-done-task"
+                                     role="tabpanel" aria-labelledby="nav-done-task-tab">
+
+                                </div>
+                                <div class="tab-pane fade nav-task-list" data-type="all" id="nav-all-task"
+                                     role="tabpanel" aria-labelledby="nav-all-task-tab">
+
+                                </div>
+                                <div class="tab-pane fade show" id="current-plan-list-tab" role="tabpanel"
+                                     aria-labelledby="nav-plan-list-tab">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <script src="{% static 'assets/javascripts/task.js' %}"></script>
+{% endblock %}

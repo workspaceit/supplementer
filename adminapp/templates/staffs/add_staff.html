@@ -1,0 +1,208 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <!-- <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Add Staff</li>
+                    </ol> -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Benutzer Hinzufügen</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="form-add-staff" action="{% url 'staffs-add' %}" method="post"
+                                  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="row">
+                                    <div class="col-sm-3  col-xs-12 align-items-center justify-content-center chg_image_profile">
+                                        <div class="row">
+                                            <div class="col-sm-8 offset-sm-2 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="has-feedback imgUp">
+                                                        <div class="imagePreview"></div>
+                                                        <label class="btn btn-primary btn_up_image w-100">
+                                                            Bild Auswählen<input type="file" class="uploadFile img"
+                                                                         id="id_avatar" name="avatar"
+                                                                         value="Upload Photo"
+                                                                         style="width: 0px;height: 0px;overflow: hidden;">
+
+                                                        </label>
+                                                        {{ form.avatar.errors }}
+                                                    </div><!-- col-2 -->
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.first_name.id_for_label }}">Vorname<span class="required-cls">*</span></label>
+                                            <div class="has-feedback">
+                                                <input type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}"
+                                                       class="form-control" placeholder="Enter First name">
+                                                {{ form.first_name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.last_name.id_for_label }}">Nachname<span class="required-cls">*</span></label>
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control" id="id_last_name"
+                                                       name="last_name" value="{{ form.last_name.value|default_if_none:'' }}"
+                                                       placeholder="Enter Last Name">
+                                                {{ form.last_name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.username.id_for_label }}">Benutzername<span class="required-cls">*</span></label>
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control" id="id_username" name="username" value="{{ form.username.value|default_if_none:'' }}"
+                                                       placeholder="Enter User name">
+                                                {{ form.username.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.email.id_for_label }}">Email addresse<span class="required-cls">*</span></label>
+                                            <div class="has-feedback">
+                                                <input type="email" class="form-control" id="id_email" name="email" value="{{ form.email.value|default_if_none:'' }}"
+                                                       placeholder="Enter email">
+                                                {{ form.email.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.password.id_for_label }}">Passwort<span class="required-cls">*</span></label>
+                                            <div class="has-feedback">
+                                                <input type="password" class="form-control" id="id_password"
+                                                       name="password"
+                                                       placeholder="Enter Password">
+                                                {{ form.password.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.confirm_password.id_for_label }}">Passwort Bestätigen
+                                                <span class="required-cls">*</span></label>
+                                            <div class="has-feedback">
+                                                <input type="password" class="form-control" id="id_confirm_password"
+                                                       name="confirm_password"
+                                                       placeholder="Confirm Password">
+                                                {{ form.confirm_password.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="project_list_selection" value='{{ project_list }}'>
+                                            <label for="{{ form.project_list.id_for_label }}">Assigned Projects</label>
+                                            <div class="has-feedback">
+                                                <select class="form-control select2" multiple
+                                                        id="id_project_list" name="project_list"
+                                                        data-placeholder="Select projects"
+                                                        style="width: 100%;">
+                                                    {% for project in projects %}
+                                                        <option value="{{ project.id }}">{{ project.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                {{ form.project_list.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.address.id_for_label }}">Addresse</label>
+                                            <div class="has-feedback">
+                                                        <textarea id="id_address" name="address" class="form-control"
+                                                                  placeholder="Enter staff address"
+                                                                  style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ form.address.value|default_if_none:'' }}</textarea>
+                                                {{ form.address.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 offset-sm-3 col-xs-12">
+                                        <button type="submit" class="btn btn-primary">Benutzer Hinzufügen</button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+    <script>
+        $(function () {
+            $('#id_project_list').select2();
+            $("#form-add-staff").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'username': {
+                        required: true
+                    },
+                    'first_name': {
+                        required: true
+                    },
+                    'last_name': {
+                        required: true
+                    },
+                    'email': {
+                        required: true
+                    },
+                    'password': {
+                        required: true,
+                        minlength: 6
+                    },
+                    'confirm_password': {
+                        required: true,
+                        minlength: 6,
+                        equalTo: 'input[name="password"]'
+                    },
+                    'address': {
+                        required: false
+                    },
+                    'avatar': {
+                        required: false
+                    }
+                }
+            });
+            $('#form-add-staff').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+            var project_list = $("#project_list_selection").val().replace(/'/g, '"');
+            if(project_list != ''){
+                $('#id_project_list').select2('val', JSON.parse(project_list));
+            }
+        });
+    </script>
+{% endblock %}

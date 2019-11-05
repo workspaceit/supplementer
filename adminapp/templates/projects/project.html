@@ -1,0 +1,92 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% load i18n %}
+    {% block extra_head %}
+        <script type="text/javascript">
+            var PROJECT_LIST_JSON_URL = '{% url "projectList" %}';
+            // translations for datatables
+        </script>
+        <script src="{% static 'assets/javascripts/datatables/project_datatable.js' %}"></script>
+    {% endblock %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <input type="hidden" value="{{ show_entries }}" id="show_entries">
+                <input type="hidden" value="{{ sorted_column }}" id="sorted_column_stand">
+                <input type="hidden" value="{{ sorting_order }}" id="sorting_order_stand">
+                <!-- /.col -->
+                <div class="col-sm-12 ">
+                    <div class="bradcrumb_container clearfix">
+                        <div class="brad_Wrap pull-left">
+                            <ol class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                <li class="breadcrumb-item active">Projects</li>
+                            </ol>
+                        </div>
+                        <div class="brad_info pull-right">
+                            <ul class="detail_breadcrumb">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card data_table_card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm col-6">
+                                    <h3 class="card-title">Projects</h3>
+                                </div>
+                                {% if request.user.is_superuser %}
+                                    <div class="col-sm col-6 text-right">
+                                        <a href="{% url 'projects-add' %}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="projects-table" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>City</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+{% endblock %}

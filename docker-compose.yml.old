@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  supplementer_db:
+    image: mysql:5.7
+    restart: always
+    container_name: suppDbContainer
+    environment:
+      MYSQL_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: supplementer_db
+    ports:
+      - "6610:3306"
+    volumes:
+      - "db-data:/var/lib/mysql"
+
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    entrypoint: /entrypoint.sh
+    container_name: suppBackend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8006:8000"
+    depends_on:
+    - supplementer_db
+
+volumes:
+  db-data:

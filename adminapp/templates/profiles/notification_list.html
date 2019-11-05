@@ -1,0 +1,14 @@
+{% load staticfiles %}
+{% for notification in notifications_list %}
+<a href="#">
+    <li class="clearfix{% if not notification.status %} unread{% endif %}">
+        <img class="img-circle img-sm" src="{% if notification.notification.sending_by.avatar %}{{ notification.notification.sending_by.avatar.url }}{% else %}{% static "assets/images/avatar5.png" %}{% endif %}"
+             alt="User Image">
+        <a href="{% url 'task-details' task_id=notification.notification.task_id %}" class="comment-text">
+            <span class="text-muted float-right">{% if today == notification.sending_at|date:"Y-m-d" %}{{ notification.sending_at|date:"h:i A" }} Today{% else %}{{ notification.sending_at|date:"d M Y" }}{% endif %}</span>
+            <!-- /.username -->
+            {{ notification.notification.text }}
+        </a>
+    </li>
+</a>
+{% endfor %}

@@ -1,0 +1,77 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <style type="text/css" media="print">
+        @media print {
+            header, footer {
+                visibility: hidden;
+            }
+        }
+    </style>
+    <div class="content-header" id="print-area" onclick="printDiv('print-area')">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <ol class="breadcrumb ">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Hause QR Code</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="card" id="print-element">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <p class="brand-text" style="text-align: center;"><strong>F&R Projectbau
+                                        GmbH</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body text-center">
+                            <img src="{% url 'qr-to-png' qr_id=qr_info.id %}"/>
+                            <div class="project-info">
+                                <label>Project
+                                    Name:</label>&nbsp;<span>{{ qr_info.building.project.name|title }}</span>
+                            </div>
+                            <div class="building-info">
+                                <label>Hause Number:</label>&nbsp;<span>{{ qr_info.building.display_number }}</span>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <div class="print-btn">
+                        <button class="print-qr btn btn-primary" onclick="printDiv('print-element');return false;">Print
+                        </button>
+                        <button class="close-qr btn btn-danger" onclick="window.close();return false;">Close</button>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+    </div>
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+{% endblock %}

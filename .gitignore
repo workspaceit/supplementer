@@ -1,0 +1,17 @@
+*.*~
+.idea/*
+*.pyc
+__pycache__
+venv/
+local_settings.py
+media/
+.supplementer.log
+static/
+#supplementer_nginx.conf
+#supplementer_nginx.conf.save
+#supplementer_uwsgi.ini
+#test.py
+#uwsgi_params
+
+
+
